@@ -6,7 +6,8 @@
 #define STDLIB_H
 
 #include <restrict.h>
-#include <efi.h>
+#include <stdint.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,8 +65,6 @@ size_t memalignment(const void* p);
 
 // non-standard functions
 uint8_t* getenvb(const char* name, size_t* size);
-
-extern EFI_FILE_HANDLE rootfs;
 
 #ifdef __cplusplus
 }

@@ -62,6 +62,6 @@ argv[1]: 123
 
 ```bash
 cmake -S . -B build \
-    --toolchain x86_64-uefi-clang.cmake
+    --toolchain /path/to/x86_64-uefi-clang.cmake
 cmake --build build
 ```

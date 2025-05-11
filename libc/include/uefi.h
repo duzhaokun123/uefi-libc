@@ -23,6 +23,8 @@ extern EFI_HANDLE IM;
 typedef INTN intn_t;
 typedef UINTN uintn_t;
 
+extern EFI_FILE_HANDLE rootfs;
+
 extern int _argc;
 extern char** _argv;
 extern char* _argvs;

@@ -151,3 +151,15 @@ uint8_t* getenvb(const char* name, size_t* size) {
 void* calloc(size_t nmemb, size_t size) {
     return malloc(nmemb * size);
 }
+
+int abs(int j) {
+    return j < 0 ? -j : j;
+}
+
+[[noreturn]]
+void exit(int status) {
+    _cleanup();
+    EFI_STATUS r = status != 0 ? EFIERR(abs(status)) : EFI_SUCCESS;
+    BS->Exit(IM, r, 0, nullptr);
+    while (true) {}
+}

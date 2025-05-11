@@ -18,7 +18,7 @@ clang 的 uefi 可能有问题 尝试使用 win32 但注意不要引入 msvc 头
 cmake -S . -B build \
     -DCMAKE_SYSTEM_PROCESSOR="<arch>" \
     -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_INSTALL_PREFIX="path/to/sysroot"
+    -DCMAKE_INSTALL_PREFIX="/path/to/sysroot"
 cmake --build build
 cmake --install build
 ```
@@ -29,6 +29,8 @@ cmake --install build
 ## 使用
 
 见 [example/README.md](example/README.md)
+
+不应该使用源文件依赖
 
 ## 已知问题
 

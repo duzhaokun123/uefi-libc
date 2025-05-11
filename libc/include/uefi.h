@@ -20,6 +20,16 @@ extern EFI_BOOT_SERVICES* BS;
 extern EFI_LOADED_IMAGE_PROTOCOL* LIP;
 extern EFI_HANDLE IM;
 
+typedef INTN intn_t;
+typedef UINTN uintn_t;
+
+extern int _argc;
+extern char** _argv;
+extern char* _argvs;
+
+void _init(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable);
+void _cleanup();
+
 #ifdef __cplusplus
 }
 #endif

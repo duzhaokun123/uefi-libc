@@ -1,8 +1,9 @@
-add_executable(example
-        main.cpp
-)
+cmake_minimum_required(VERSION 3.31)
 
-target_link_libraries(example
-        uefi-libc
-        libc++
+project(uefi_libc_example C)
+
+set(CMAKE_C_STANDARD 23)
+
+add_executable(example
+        main.c
 )

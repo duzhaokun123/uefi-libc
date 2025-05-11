@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cerrno>
 #include <cwchar>
-
+#include <FILE.h>
 #include "TODO.h"
 
 int fputws(const wchar_t* restrict s, FILE* restrict stream) {

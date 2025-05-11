@@ -13,11 +13,12 @@
 #define NANOPRINTF_USE_WRITEBACK_FORMAT_SPECIFIERS 0
 
 #define NANOPRINTF_IMPLEMENTATION
-#include "cstdlib"
-#include "cstring"
-#include "errno.h"
+#include <cstdlib>
+#include <cstring>
+#include <cerrno>
 #include "nanoprintf.h"
 #include "TODO.h"
+#include "FILE.h"
 
 EFI_FILE_HANDLE rootfs = nullptr;
 

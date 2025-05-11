@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <uefi.h>
+#include <FILE.h>
 
 static_assert(sizeof(int8_t) == 1, "int8_t is not 1 byte");
 static_assert(sizeof(int16_t) == 2, "int16_t is not 2 bytes");

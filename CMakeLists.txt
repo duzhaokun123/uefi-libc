@@ -12,6 +12,9 @@ project(uefi_libc C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_C_STANDARD 23)
 
+set(COMMON_FLAGS " -fno-stack-check -mno-red-zone -fno-rtti")
+string(APPEND CMAKE_C_FLAGS " ${COMMON_FLAGS}")
+string(APPEND CMAKE_CXX_FLAGS " ${COMMON_FLAGS} -fno-exceptions")
+
 add_subdirectory(libc)
 add_subdirectory(libc++)
-add_subdirectory(example)

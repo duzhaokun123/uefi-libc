@@ -1,5 +1,4 @@
 set(CMAKE_EXECUTABLE_SUFFIX ".efi")
 set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS FALSE)
-#set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
-option(UEFI_CLANG_FAKE_WIN32 "Use fake ${CMAKE_SYSTEM_PROCESSOR}-win32 target for clang" OFF)
+add_link_options("LINKER:-subsystem:efi_application,-nodefaultlib,-entry:EfiMain") # no effect on uefi target

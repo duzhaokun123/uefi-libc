@@ -37,6 +37,12 @@ target_link_libraries(c PRIVATE
         c++
 )
 
+if (UEFI_CLANG_FAKE_WIN32)
+    target_compile_definitions(c PRIVATE
+        UEFI_CLANG_FAKE_WIN32
+    )
+endif ()
+
 install(TARGETS c
         ARCHIVE DESTINATION lib
         FILE_SET HEADERS

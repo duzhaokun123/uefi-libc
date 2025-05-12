@@ -18,7 +18,7 @@ static_assert(sizeof(uint64_t) == 8, "uint64_t is not 8 bytes");
 static_assert(sizeof(size_t) == sizeof(void*), "size_t is not the same size as void*");
 static_assert(sizeof(wchar_t) == 2, "wchar_t is not 2 bytes");
 static_assert(sizeof(char) == 1, "char is not 1 byte");
-static_assert(sizeof(CHAR16) == sizeof(wchar_t), "CHAR16 is not the same size as wchar_t");
+static_assert(sizeof(wchar_t) == sizeof(CHAR16), "wchar_t is not the same size as CHAR16");
 
 EFI_RUNTIME_SERVICES* RT = nullptr;
 EFI_SYSTEM_TABLE* ST = nullptr;
@@ -33,6 +33,12 @@ FILE* _stdin = nullptr;
 int _argc = 0;
 char** _argv = nullptr;
 char* _argvs = nullptr;
+
+#if defined(UEFI_CLANG_FAKE_WIN32) && defined(__x86_64__)
+extern "C" {
+uint64_t _fltused; // pass float on x86_64
+}
+#endif
 
 void _init(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable) {
     IM = imageHandle;
@@ -49,13 +55,13 @@ void _init(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable) {
             .text_out = ST->ConOut,
         },
     };
-    _stderr = new FILE {
+    _stderr = new FILE{
         .type = FILE_STREAM_TYPE_OUT,
         .stream = {
             .text_out = ST->StdErr,
         },
     };
-    _stdin = new FILE {
+    _stdin = new FILE{
         .type = FILE_STREAM_TYPE_IN,
         .stream = {
             .text_in = ST->ConIn
@@ -112,4 +118,3 @@ void _cleanup() {
         rootfs->Close(rootfs);
     }
 }
-

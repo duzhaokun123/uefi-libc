@@ -8,7 +8,7 @@ UEFI 能用的标准 C 库
 
 ## 编译
 
-必须使用 clang >= 20.1.3
+建议使用 clang >= 20.1.3
 
 支持目标`<arch>-unknown-uefi`或`<arch>-unknown-win32`
 
@@ -18,7 +18,8 @@ clang 的 uefi 可能有问题 尝试使用 win32 但注意不要引入 msvc 头
 cmake -S . -B build \
     -DCMAKE_SYSTEM_PROCESSOR="<arch>" \
     -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_INSTALL_PREFIX="/path/to/sysroot"
+    -DCMAKE_INSTALL_PREFIX="/path/to/sysroot" \
+#    -DUEFI_CLANG_FAKE_WIN32=ON \ # for old clang
 cmake --build build
 cmake --install build
 ```

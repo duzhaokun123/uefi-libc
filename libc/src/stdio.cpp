@@ -2,8 +2,13 @@
 // Created by o0kam1 on 2025/05/10.
 //
 
+#include <cerrno>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <uefi.h>
+#include "FILE.h"
+#include "TODO.h"
 
 #define NANOPRINTF_USE_FIELD_WIDTH_FORMAT_SPECIFIERS 1
 #define NANOPRINTF_USE_PRECISION_FORMAT_SPECIFIERS 1
@@ -13,12 +18,10 @@
 #define NANOPRINTF_USE_WRITEBACK_FORMAT_SPECIFIERS 0
 
 #define NANOPRINTF_IMPLEMENTATION
-#include <cstdlib>
-#include <cstring>
-#include <cerrno>
+#ifdef _MSC_VER
+#undef _MSC_VER
+#endif
 #include "nanoprintf.h"
-#include "TODO.h"
-#include "FILE.h"
 
 EFI_FILE_HANDLE rootfs = nullptr;
 

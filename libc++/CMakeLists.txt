@@ -8,7 +8,7 @@ target_include_directories(c++ PUBLIC
         include
 )
 
-target_link_libraries(c++ PRIVATE
+target_link_libraries(c++ PUBLIC
         c
 )
 

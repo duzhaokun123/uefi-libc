@@ -23,16 +23,39 @@ target_sources(c PUBLIC
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
         FILES
         include/assert.h
+#        include/complex.h
+        include/ctype.h
         include/errno.h
-        include/restrict.h
+#        include/fenv.h
+#        include/float.h
+#        include/inttypes.h
+#        include/iso646.h
+#        include/limits.h
+#        include/locale.h
+        include/math.h
+#        include/setjmp.h
+#        include/signal.h
+#        include/stdalign.h
         include/stdarg.h
+#        include/stdatomic.h
+#        include/stdbit.h
+#        include/stdbool.h
+#        include/stdckdint.h
+#        include/stddef.h
+        include/stdint.h
         include/stdio.h
         include/stdlib.h
+#        include/stdmath.h
+#        include/stdnoreturn.h
         include/string.h
-        include/wchar.h
-        include/math.h
+#        include/tgmath.h
         include/time.h
+#        include/uchar.h
+        include/wchar.h
+#        include/wctype.h
+
         include/unistd.h
+
         include/uefi.h
 )
 

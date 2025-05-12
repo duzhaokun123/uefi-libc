@@ -7,7 +7,11 @@ endif ()
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 set(CMAKE_SYSTEM_NAME "Generic")
 
-project(uefi_libc C CXX)
+project(uefi_libc CXX)
+
+if (CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
+    message(WARNING "using fake MSVC clang, which is not supported")
+endif ()
 
 option(UEFI_CLANG_FAKE_WIN32 "Use fake ${CMAKE_SYSTEM_PROCESSOR}-win32 target for clang" OFF)
 
@@ -21,16 +25,13 @@ else ()
 endif ()
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_C_STANDARD 23)
 
 set(COMMON_FLAGS " -fno-stack-check -mno-red-zone -fno-rtti")
 if (UEFI_CLANG_FAKE_WIN32)
     string(APPEND COMMON_FLAGS " ")
 endif ()
-string(APPEND CMAKE_C_FLAGS " ${COMMON_FLAGS}")
 string(APPEND CMAKE_CXX_FLAGS " ${COMMON_FLAGS} -fno-exceptions")
 
-set(CMAKE_C_COMPILER_TARGET ${UEFI_TARGET})
 set(CMAKE_CXX_COMPILER_TARGET ${UEFI_TARGET})
 
 add_subdirectory(libc)

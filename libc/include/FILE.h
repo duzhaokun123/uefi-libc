@@ -6,7 +6,7 @@
 #define FILE_H
 
 #include <stdio.h>
-#include <efi.h>
+#include <uefi.h>
 
 #ifdef __cplusplus
 extern "C" {

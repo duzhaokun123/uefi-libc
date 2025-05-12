@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cstddef>
 #include <uefi.h>
 #include "FILE.h"
 #include "TODO.h"

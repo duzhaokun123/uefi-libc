@@ -38,8 +38,8 @@ target_link_libraries(c PRIVATE
 )
 
 if (UEFI_CLANG_FAKE_WIN32)
-    target_compile_definitions(c PRIVATE
-        UEFI_CLANG_FAKE_WIN32
+    target_compile_definitions(c PUBLIC
+            UEFI_CLANG_FAKE_WIN32
     )
 endif ()
 

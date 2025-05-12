@@ -13,6 +13,21 @@
 extern "C" {
 #endif
 
+typedef struct {
+    int quot;
+    int rem;
+} div_t;
+
+typedef struct {
+    long quot;
+    long rem;
+} ldiv_t;
+
+typedef struct {
+    long long quot;
+    long long rem;
+} lldiv_t;
+
 // void call_once(once_flag* flag, void (*func)(void));
 double atof(const char* nptr);
 int atoi(const char* nptr);
@@ -53,9 +68,9 @@ void qsort(void* base, size_t nmemb, size_t size,
 int abs(int j);
 long int labs(long int j);
 long long int llabs(long long int j);
-// div_t div(int numer, int denom);
-// ldiv_t ldiv(long int numer, long int denom);
-// lldiv_t lldiv(long long int numer, long long int denom);
+div_t div(int numer, int denom);
+ldiv_t ldiv(long int numer, long int denom);
+lldiv_t lldiv(long long int numer, long long int denom);
 int mblen(const char* s, size_t n);
 int mbtowc(wchar_t* restrict pwc, const char* restrict s, size_t n);
 int wctomb(char* s, wchar_t wc);

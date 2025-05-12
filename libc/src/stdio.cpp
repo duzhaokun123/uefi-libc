@@ -210,17 +210,17 @@ FILE* fopen(const char* restrict filename, const char* restrict mode) {
 
     filename = makeDosPath(filename);
     auto file = new FILE;
-    if (strcmp(filename, "/dev/stdin") == 0) {
+    if (strcmp(filename, "\\dev\\stdin") == 0) {
         file->type = FILE_STREAM_TYPE_IN;
         file->stream.text_in = ST->ConIn;
         return file;
     }
-    if (strcmp(filename, "/dev/stdout") == 0) {
+    if (strcmp(filename, "\\dev\\stdout") == 0) {
         file->type = FILE_STREAM_TYPE_OUT;
         file->stream.text_out = ST->ConOut;
         return file;
     }
-    if (strcmp(filename, "/dev/stderr") == 0) {
+    if (strcmp(filename, "\\dev\\stderr") == 0) {
         file->type = FILE_STREAM_TYPE_OUT;
         file->stream.text_out = ST->StdErr;
         return file;

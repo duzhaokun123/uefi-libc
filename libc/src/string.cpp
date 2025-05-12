@@ -164,3 +164,15 @@ char* strerror(int errnum) {
     }
     return strerror_buffer;
 }
+
+char* strrchr(const char* s, int c) {
+    char* e;
+    if (s) {
+        e = (char*) s + strlen(s) - 1;
+        while (s <= e) {
+            if (*e == (char) c) return e;
+            e--;
+        }
+    }
+    return NULL;
+}

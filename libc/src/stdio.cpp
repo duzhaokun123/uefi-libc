@@ -10,6 +10,7 @@
 #include <uefi.h>
 #include "FILE.h"
 #include "TODO.h"
+#include "utils.h"
 
 #define NANOPRINTF_USE_FIELD_WIDTH_FORMAT_SPECIFIERS 1
 #define NANOPRINTF_USE_PRECISION_FORMAT_SPECIFIERS 1
@@ -92,6 +93,14 @@ int sprintf(char* restrict s, const char* restrict format, ...) {
     va_list args;
     va_start(args, format);
     const auto r = vsprintf(s, format, args);
+    va_end(args);
+    return r;
+}
+
+int snprintf(char* restrict s, size_t n, const char* restrict format, ...) {
+    va_list args;
+    va_start(args, format);
+    const auto r = vsnprintf(s, n, format, args);
     va_end(args);
     return r;
 }
@@ -199,6 +208,7 @@ FILE* fopen(const char* restrict filename, const char* restrict mode) {
         return nullptr;
     }
 
+    filename = makeDosPath(filename);
     auto file = new FILE;
     if (strcmp(filename, "/dev/stdin") == 0) {
         file->type = FILE_STREAM_TYPE_IN;
@@ -237,6 +247,7 @@ FILE* fopen(const char* restrict filename, const char* restrict mode) {
     if (write || append) openMode |= EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE | EFI_FILE_MODE_CREATE;
     auto wfilename = new wchar_t[strlen(filename)];
     mbstowcs(wfilename, filename, strlen(filename));
+    delete[] filename;
     status = rootfs->Open(rootfs, &file->stream.file, reinterpret_cast<CHAR16*>(wfilename), openMode, 0);
     delete[] wfilename;
     if (status != EFI_SUCCESS) {
@@ -267,7 +278,10 @@ FILE* fopen(const char* restrict filename, const char* restrict mode) {
         delete file;
         return nullptr;
     }
-    // TODO: append, extended
+    if (append) {
+        fseek(file, 0, SEEK_END);
+    }
+    // TODO: extended
 
     return file;
 }
@@ -417,4 +431,51 @@ int putchar(int c) {
 
 int putc(int c, FILE* stream) {
     return fputc(c, stream);
+}
+
+FILE* fdopen(int fd, const char* mode) {
+    errno = 0;
+    switch (fd) {
+        case 0: {
+            return fopen("/dev/stdin", mode);
+        }
+        case 1: {
+            return fopen("/dev/stdout", mode);
+        }
+        case 2: {
+            return fopen("/dev/stderr", mode);
+        }
+        default: {
+            errno = EBADF;
+            return nullptr;
+        }
+    }
+}
+
+int fileno(FILE* stream) {
+    errno = 0;
+    if (stream == stdin) {
+        return 0;
+    }
+    if (stream == stdout) {
+        return 1;
+    }
+    if (stream == stderr) {
+        return 2;
+    }
+    errno = EBADF;
+    return -1;
+}
+
+void perror(const char* s) {
+    fprintf(stderr, "%s: %s", s, strerror(errno));
+}
+
+int ferror(FILE* stream) {
+    auto state = stream->status;
+    if (state == EFI_SUCCESS) {
+        return 0;
+    } else {
+        return EFI_ERROR(state);
+    }
 }

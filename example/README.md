@@ -6,7 +6,7 @@
 
 ## 例子
 
-### 一个不使用构建系统的简单例子
+### 不使用构建系统的简单例子
 
 ```c
 // main.c
@@ -65,3 +65,25 @@ cmake -S . -B build \
     --toolchain /path/to/x86_64-uefi-clang.cmake
 cmake --build build
 ```
+
+### 使用自定义构建脚本的例子
+
+编译 zlib 1.3.1
+
+```bash
+export PREFIX=/path/to/sysroot
+export CC=clang
+export CFLAGS="--target=x86_64-uefi -I$PREFIX/include $PREFIX/lib/libc.a $PREFIX/lib/libc++.a"
+./configure \
+    --static \
+    --prefix=$PREFIX \
+    --solo
+make
+make install
+```
+
+这只是个长得有点像 GNU autotools 的东西 它不是
+
+`--solo`因为我们没有`sys/*`
+
+`--static`因为 UEFI 不支持动态链接

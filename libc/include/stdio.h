@@ -86,6 +86,10 @@ void perror(const char* s);
 int fprintf(FILE* restrict stream, const char* restrict format, ...);
 int fscanf(FILE* restrict stream, const char* restrict format, ...);
 
+// posix
+FILE* fdopen(int fd, const char* mode);
+int fileno(FILE* stream);
+
 #ifdef __cplusplus
 }
 #endif

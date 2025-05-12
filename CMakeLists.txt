@@ -7,7 +7,7 @@ endif ()
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 set(CMAKE_SYSTEM_NAME "Generic")
 
-project(uefi_libc CXX)
+project(uefi_libc C CXX)
 
 if (CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
     message(WARNING "using fake MSVC clang, which is not supported")

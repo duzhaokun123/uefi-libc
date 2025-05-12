@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 print_usage() {
-  echo "Usage: $0 --arch <arch> --ovmf <ovmf_path> --build <build_path> [--help] [-- <qemu_args>]"
+  echo "Usage: $0 --arch <arch> --ovmf <ovmf_path> [--build <build_path>] [--help] [-- <qemu_args>]"
   echo "  -a --arch <arch>        Architecture to use (x86_64, aarch64, etc.)"
   echo "  -f --ovmf <ovmf_path>   Path to OVMF firmware"
   echo "  -b --build <build_path> Path to the build directory"
@@ -61,8 +61,11 @@ if [[ $build == ?:* ]]; then
 fi
 
 mkdir -p ./esp/EFI/BOOT
-cp -v "$build"/*.efi ./esp
 echo "FS0:" > ./esp/EFI/BOOT/startup.nsh
+
+if [[ -n $build ]]; then
+cp -v "$build"/*.efi ./esp
+fi
 
 qemu_exe=qemu-system-$arch
 

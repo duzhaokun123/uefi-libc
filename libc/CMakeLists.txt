@@ -30,6 +30,9 @@ target_sources(c PUBLIC
         include/stdlib.h
         include/string.h
         include/wchar.h
+        include/math.h
+        include/time.h
+        include/unistd.h
         include/uefi.h
 )
 

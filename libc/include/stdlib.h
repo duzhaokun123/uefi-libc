@@ -61,8 +61,8 @@ int at_quick_exit(void (* func)(void));
 char* getenv(const char* name);
 [[noreturn]] void quick_exit(int status);
 int system(const char* string);
-void* bsearch(const void* key, void* base, size_t nmemb, size_t size,
-              int (* compar)(const void*, const void*));
+void* bsearch(const void* key, const void* ptr, size_t count, size_t size,
+              int (* comp)(const void*, const void*));
 void qsort(void* base, size_t nmemb, size_t size,
            int (* compar)(const void*, const void*));
 int abs(int j);

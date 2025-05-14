@@ -5,7 +5,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <uefi.h>
-#include <FILE.h>
+
+#include "stdio/FILE_In.h"
+#include "stdio/FILE_Out.h"
 
 static_assert(sizeof(int8_t) == 1, "int8_t is not 1 byte");
 static_assert(sizeof(int16_t) == 2, "int16_t is not 2 bytes");
@@ -30,9 +32,9 @@ FILE* _stdout = nullptr;
 FILE* _stderr = nullptr;
 FILE* _stdin = nullptr;
 
-int _argc = 0;
-char** _argv = nullptr;
-char* _argvs = nullptr;
+int argc = 0;
+char** argv = nullptr;
+char* argvs = nullptr;
 
 #if defined(UEFI_CLANG_FAKE_WIN32) && defined(__x86_64__)
 extern "C" {
@@ -49,26 +51,11 @@ void _init(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable) {
     EFI_GUID loadedImageGuid = EFI_LOADED_IMAGE_PROTOCOL_GUID;
     BS->HandleProtocol(IM, &loadedImageGuid, reinterpret_cast<void**>(&LIP));
 
-    _stdout = new FILE{
-        .type = FILE_STREAM_TYPE_OUT,
-        .stream = {
-            .text_out = ST->ConOut,
-        },
-    };
-    _stderr = new FILE{
-        .type = FILE_STREAM_TYPE_OUT,
-        .stream = {
-            .text_out = ST->StdErr,
-        },
-    };
-    _stdin = new FILE{
-        .type = FILE_STREAM_TYPE_IN,
-        .stream = {
-            .text_in = ST->ConIn
-        },
-    };
+    _stdout = reinterpret_cast<FILE*>(new FILE_Out(ST->ConOut));
+    _stderr = reinterpret_cast<FILE*>(new FILE_Out(ST->StdErr));
+    _stdin = reinterpret_cast<FILE*>(new FILE_In(ST->ConIn));
 
-    int argc = 0;
+    argc = 0;
     wchar_t** argvw = nullptr;
     EFI_GUID shellParamGuid = EFI_SHELL_PARAMETERS_PROTOCOL_GUID;
     EFI_SHELL_PARAMETERS_PROTOCOL* shellParam = nullptr;
@@ -79,8 +66,8 @@ void _init(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable) {
     } else {
         // TODO: support shell 1.0
     }
-    char** argv = nullptr;
-    char* argvs = nullptr;
+    argv = nullptr;
+    argvs = nullptr;
     if (argc != 0 && argvw != nullptr) {
         argv = new char*[argc + 1];
         size_t argvSize = 0;
@@ -102,14 +89,12 @@ void _init(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable) {
         }
         argv[argc] = nullptr;
     }
-    _argc = argc;
-    _argv = argv;
-    _argvs = argvs;
 }
 
 void _cleanup() {
-    delete[] _argv;
-    delete[] _argvs;
+    // TODO: track opened files and close them
+    delete[] argv;
+    delete[] argvs;
     delete _stdout;
     delete _stderr;
     delete _stdin;

@@ -13,7 +13,10 @@
 extern "C" {
 #endif
 
-struct FILE;
+struct FILE {
+    int placeholder; // FILE is implement in somewhere you don't need to know,
+    // don't touch it
+};
 
 #ifndef __cplusplus
 typedef struct FILE FILE;
@@ -89,6 +92,11 @@ int fscanf(FILE* restrict stream, const char* restrict format, ...);
 // posix
 FILE* fdopen(int fd, const char* mode);
 int fileno(FILE* stream);
+
+// non-standard
+FILE* fopen_in(void* /* EFI_SIMPLE_TEXT_IN_PROTOCOL* */ in);
+FILE* fopen_out(void* /* EFI_SIMPLE_TEXT_OUT_PROTOCOL* */ out);
+FILE* fopen_file(void* /* EFI_FILE_HANDLE */ fileHandle);
 
 #ifdef __cplusplus
 }

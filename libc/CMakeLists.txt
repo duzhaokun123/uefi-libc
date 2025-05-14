@@ -5,7 +5,11 @@ if (UEFI_GNU_EFI_DIR STREQUAL "OFF")
     message(STATUS "using default gnu-efi path: ${UEFI_GNU_EFI_DIR}")
 endif ()
 
-aux_source_directory(src SRC_FILES)
+file(GLOB_RECURSE SRC_FILES
+#        src/{.,**}/*.{c,cpp}
+        src/*.c src/**/*.c
+        src/*.cpp src/**/*.cpp
+)
 
 add_library(c STATIC
         ${SRC_FILES}
@@ -16,6 +20,10 @@ target_include_directories(c PUBLIC
         ${UEFI_GNU_EFI_DIR}/inc
         ${UEFI_GNU_EFI_DIR}/inc/protocol
         ${UEFI_GNU_EFI_DIR}/inc/${CMAKE_SYSTEM_PROCESSOR}
+)
+
+target_include_directories(c PRIVATE
+        src
 )
 
 target_sources(c PUBLIC

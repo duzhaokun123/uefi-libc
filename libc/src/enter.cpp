@@ -4,12 +4,13 @@
 
 #include <uefi.h>
 #include <enter.h>
-#include <cstdlib>
-#include <cstdio>
+
+extern int argc;
+extern char** argv;
 
 EFI_STATUS EfiMain(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE* systemTable) {
     _init(imageHandle, systemTable);
-    const int ret = main(_argc, _argv);
+    const int ret = main(argc, argv);
     _cleanup();
     return ret != 0 ? EFIERR(ret) : EFI_SUCCESS;
 }

@@ -40,9 +40,9 @@ char* strerror(int errnum);
 size_t strlen(const char* s);
 size_t strnlen(const char* s, size_t n);
 
-// non-standard
-void* memmem(const void* haystack, size_t hl, const void* needle, size_t nl);
-
+// posix
+void* memmem(const void* haystack, size_t haystacklen,
+             const void* needle, size_t needlelen);
 #ifdef __cplusplus
 }
 #endif

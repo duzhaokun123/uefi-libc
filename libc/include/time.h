@@ -14,12 +14,16 @@ extern "C" {
 typedef __UINT64_TYPE__ clock_t;
 typedef __UINT64_TYPE__ time_t;
 
-typedef struct {
+struct timespec {
     time_t tv_sec;
     long tv_nsec;
-} timespec;
+};
 
-typedef struct {
+#ifndef __cplusplus
+typedef struct timespec timespec;
+#endif
+
+struct tm {
     int tm_sec;
     int tm_min;
     int tm_hour;
@@ -29,7 +33,11 @@ typedef struct {
     int tm_wday;
     int tm_yday;
     int tm_isdst;
-} tm;
+};
+
+#ifndef __cplusplus
+typedef struct tm tm;
+#endif
 
 clock_t clock(void);
 double difftime(time_t time1, time_t time0);

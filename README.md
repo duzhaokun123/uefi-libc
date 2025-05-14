@@ -51,6 +51,18 @@ cmake --install build
 
 用到的 c++ 函数只有`new`和`delete` 应该不会有循环依赖的问题
 
+### 字符输出系列函数不接受<u>空终止多字节字符串</u>(NTMBS)
+
+仅接受<u>空终止字节字符串</u>(NTBS)
+
+虽然 c23 标准未要求接受 NTMBS 事实上它要求 NTBS
+
+但结果可能不符合预期
+
+因为处理方式是逐个字节写入 这会导致多字节字符串被拆分
+
+具体参考`FILE_Out`实现 给定的字符会被转换为`char16_t`并连接`\0`作为`char16_t`字符串以兼容`EFI_SIMPLE_TEXT_OUT_PROTOCOL::OutputString(void* this, CHAR16* string)`
+
 ## TODO
 
 单元测试

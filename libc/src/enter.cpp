@@ -3,7 +3,8 @@
 //
 
 #include <uefi.h>
-#include <enter.h>
+
+extern int main(int argc, char** argv);
 
 extern int argc;
 extern char** argv;

@@ -8,8 +8,12 @@ include_directories(SYSTEM "${CMAKE_SYSROOT}/include")
 link_directories("${CMAKE_SYSROOT}/lib")
 link_libraries("${CMAKE_SYSROOT}/lib/libc.a" "${CMAKE_SYSROOT}/lib/libc++.a")
 
+if(NOT DEFINED CMAKE_C_COMPILER)
 set(CMAKE_C_COMPILER "@CMAKE_C_COMPILER@")
+endif()
+if(NOT DEFINED CMAKE_CXX_COMPILER)
 set(CMAKE_CXX_COMPILER "@CMAKE_CXX_COMPILER@")
+endif()
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)

@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.31)
 
-if (NOT CMAKE_SYSTEM_PROCESSOR)
-    message(FATAL_ERROR "CMAKE_SYSTEM_PROCESSOR is not set, set it to x86_64, aarch64 or riscv64 ...")
-endif ()
-
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 set(CMAKE_SYSTEM_NAME "Generic")
 
 project(uefi_libc C CXX)
+
+if (NOT CMAKE_SYSTEM_PROCESSOR)
+    message(FATAL_ERROR "CMAKE_SYSTEM_PROCESSOR is not set, set it to x86_64, aarch64 or riscv64 ...")
+endif ()
 
 if (CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
     message(WARNING "using fake MSVC clang, which is not supported")
@@ -45,10 +45,10 @@ install(DIRECTORY cmake/Platform
 )
 
 configure_file(
-        uef-clang.cmake.in uefi-clang.cmake @ONLY
+        cmake/toolchain/uef-clang.cmake.in cmake/toolchain/uefi-clang.cmake @ONLY
 )
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/uefi-clang.cmake"
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/toolchain/uefi-clang.cmake"
         DESTINATION share/cmake/toolchain
         RENAME "${CMAKE_SYSTEM_PROCESSOR}-uefi-clang.cmake"
         PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ

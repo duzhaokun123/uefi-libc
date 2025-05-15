@@ -15,6 +15,10 @@ add_library(c STATIC
         ${SRC_FILES}
 )
 
+target_compile_definitions(c PUBLIC
+        UEFI_LIBC_USE_GNU_EFI
+)
+
 target_include_directories(c PUBLIC
         include
         ${UEFI_GNU_EFI_DIR}/inc
@@ -39,7 +43,7 @@ target_sources(c PUBLIC
 #        include/inttypes.h
 #        include/iso646.h
 #        include/limits.h
-#        include/locale.h
+        include/locale.h
         include/math.h
 #        include/setjmp.h
 #        include/signal.h
@@ -63,6 +67,8 @@ target_sources(c PUBLIC
 #        include/wctype.h
 
         include/unistd.h
+
+        include/restrict.h
 
         include/uefi.h
 )

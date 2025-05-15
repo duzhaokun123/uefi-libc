@@ -5,7 +5,16 @@
 #ifndef UEFI_H
 #define UEFI_H
 
+#ifdef UEFI_LIBC_USE_GNU_EFI
 #include <efi.h>
+#else
+#define EFI_RUNTIME_SERVICES        void
+#define EFI_SYSTEM_TABLE            void
+#define EFI_BOOT_SERVICES           void
+#define EFI_LOADED_IMAGE_PROTOCOL   void
+#define EFI_HANDLE                  void*
+#define EFI_FILE_HANDLE             void*
+#endif
 
 #ifdef __cplusplus
 extern "C" {

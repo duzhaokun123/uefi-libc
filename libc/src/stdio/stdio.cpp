@@ -12,8 +12,8 @@
 #include "FILE_In.h"
 #include "FILE_Out.h"
 #include "FILE_stream.h"
-#include "TODO.h"
-#include "../utils.h"
+#include "../utils/TODO.h"
+#include "../utils/utils.h"
 
 #define NANOPRINTF_USE_FIELD_WIDTH_FORMAT_SPECIFIERS 1
 #define NANOPRINTF_USE_PRECISION_FORMAT_SPECIFIERS 1

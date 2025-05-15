@@ -14,6 +14,7 @@ if (CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
 endif ()
 
 option(UEFI_CLANG_FAKE_WIN32 "Use fake ${CMAKE_SYSTEM_PROCESSOR}-win32 target for clang" OFF)
+option(UEFI_LIBC_BUILD_EXAMPLE "Build example" ON)
 
 if (UEFI_CLANG_FAKE_WIN32)
     set(UEFI_TARGET "${CMAKE_SYSTEM_PROCESSOR}-win32")
@@ -24,14 +25,17 @@ else ()
     endif ()
 endif ()
 
+set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
 set(COMMON_FLAGS " -fno-stack-check -mno-red-zone -fno-rtti")
 if (UEFI_CLANG_FAKE_WIN32)
     string(APPEND COMMON_FLAGS " ")
 endif ()
+string(APPEND CMAKE_C_FLAGS " ${COMMON_FLAGS}")
 string(APPEND CMAKE_CXX_FLAGS " ${COMMON_FLAGS} -fno-exceptions")
 
+set(CMAKE_C_COMPILER_TARGET ${UEFI_TARGET})
 set(CMAKE_CXX_COMPILER_TARGET ${UEFI_TARGET})
 
 add_subdirectory(libc)
@@ -65,3 +69,7 @@ install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/cmake/Platform"
         PATTERN "*.cmake"
         PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ
 )
+
+if (UEFI_LIBC_BUILD_EXAMPLE)
+    add_subdirectory(example)
+endif ()

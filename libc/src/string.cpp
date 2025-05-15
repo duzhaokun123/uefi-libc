@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include "algorithm"
+#include "utils/STUB.h"
 
 void* memcpy(void* dst, const void* src, size_t n) {
     // from posix-uefi
@@ -140,7 +141,9 @@ int strncmp(const char* s1, const char* s2, size_t n) {
     return 0;
 }
 
-size_t strxfrm(char* restrict s1, const char* restrict s2, size_t n);
+FUNC_STUB(
+size_t strxfrm(char* restrict s1, const char* restrict s2, size_t n)
+)
 
 void* memchr(const void* s, int c, size_t n) {
     // from posix-uefi
@@ -164,9 +167,13 @@ char* strchr(const char* s, int c) {
     return NULL;
 }
 
-size_t strcspn(const char* s1, const char* s2);
+FUNC_STUB(
+size_t strcspn(const char* s1, const char* s2)
+)
 
-char* strpbrk(const char* s1, const char* s2);
+FUNC_STUB(
+char* strpbrk(const char* s1, const char* s2)
+)
 
 char* strrchr(const char* s, int c) {
     // from posix-uefi
@@ -182,7 +189,9 @@ char* strrchr(const char* s, int c) {
     return NULL;
 }
 
+FUNC_STUB(
 size_t strspn(const char* s1, const char* s2);
+)
 
 char* strstr(const char* haystack, const char* needle) {
     // from posix-uefi

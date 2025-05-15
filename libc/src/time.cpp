@@ -6,6 +6,7 @@
 
 #include "cstdio"
 #include "uefi.h"
+#include "utils/STUB.h"
 
 clock_t clock() {
     return -1; // TODO:
@@ -15,9 +16,13 @@ double difftime(time_t time1, time_t time0) {
     return time1 - time0;
 }
 
-time_t mktime(tm* timeptr);
+FUNC_STUB(
+time_t mktime(tm* timeptr)
+)
 
+FUNC_STUB(
 time_t timegm(tm* timeptr);
+)
 
 time_t time(time_t* timer) {
     auto efiTime = EFI_TIME();
@@ -30,9 +35,13 @@ time_t time(time_t* timer) {
     return t;
 }
 
-int timespec_get(timespec* ts, int base);
+FUNC_STUB(
+int timespec_get(timespec* ts, int base)
+)
 
+FUNC_STUB(
 int timespec_getres(timespec* ts, int base);
+)
 
 const char* wwwMap[] = {
     "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
@@ -64,12 +73,22 @@ char* ctime(const time_t* timer) {
     return r;
 }
 
-tm* gmtime(const time_t* timer);
+FUNC_STUB(
+tm* gmtime(const time_t* timer)
+)
 
-tm* gmtime_r(const time_t* timer, tm* buf);
+FUNC_STUB(
+tm* gmtime_r(const time_t* timer, tm* buf)
+)
 
-tm* localtime(const time_t* timer);
+FUNC_STUB(
+tm* localtime(const time_t* timer)
+)
 
-tm* localtime_r(const time_t* timer, tm* buf);
+FUNC_STUB(
+tm* localtime_r(const time_t* timer, tm* buf)
+)
 
-size_t strftime(char* restrict s, size_t maxsize, const char* restrict format, const tm* restrict timeptr);
+FUNC_STUB(
+size_t strftime(char* restrict s, size_t maxsize, const char* restrict format, const tm* restrict timeptr)
+)

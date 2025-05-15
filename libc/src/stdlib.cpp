@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include "algorithm"
+#include "utils/STUB.h"
 
 typedef struct {
     size_t size;
@@ -16,7 +17,9 @@ typedef struct {
 
 // void call_once(once_flag* flag, void (*func)(void));
 
-double atof(const char* nptr);
+FUNC_STUB(
+double atof(const char* nptr)
+);
 
 int atoi(const char* nptr) {
     return atoll(nptr);
@@ -86,7 +89,9 @@ void free_sized(void* ptr, size_t size) {
     free(ptr);
 }
 
-void free_aligned_sized(void* ptr, size_t alignment, size_t size);
+FUNC_STUB(
+void free_aligned_sized(void* ptr, size_t alignment, size_t size)
+)
 
 void* malloc(size_t size) {
     malloc_t* ptr = nullptr;
@@ -206,8 +211,10 @@ void* bsearch(const void* key, const void* array, size_t array_size,
     return nullptr;
 }
 
+FUNC_STUB(
 void qsort(void* base, size_t nmemb, size_t size,
-           int (* compar)(const void*, const void*));
+           int (* compar)(const void*, const void*))
+)
 
 int abs(int j) {
     return j < 0 ? -j : j;
@@ -340,7 +347,9 @@ size_t wcstombs(char* __s, const wchar_t* __pwcs, size_t __n) {
     return (size_t) (__s - orig);
 }
 
-size_t memalignment(const void* p);
+FUNC_STUB(
+size_t memalignment(const void* p)
+)
 
 uint8_t* getenvb(const char* name, size_t* size) {
     EFI_GUID globalGuid = EFI_GLOBAL_VARIABLE;

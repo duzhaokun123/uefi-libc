@@ -17,6 +17,7 @@ add_library(c STATIC
 
 target_compile_definitions(c PUBLIC
         UEFI_LIBC_USE_GNU_EFI
+#        UEFI_LIBC_STUB_AS_TRAP
 )
 
 target_include_directories(c PUBLIC

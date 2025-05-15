@@ -6,8 +6,9 @@
 #include <cerrno>
 #include <cwchar>
 
-#include "TODO.h"
+#include "utils/TODO.h"
 #include "stdio/FILE_stream.h"
+#include "utils/STUB.h"
 
 int fwprintf(FILE* restrict stream, const wchar_t* restrict format, ...) {
     va_list args;
@@ -118,7 +119,9 @@ int fputws(const wchar_t* restrict s, FILE* restrict stream) {
     return len;
 }
 
-int fwide(FILE* stream, int mode);
+FUNC_STUB(
+int fwide(FILE* stream, int mode)
+)
 
 wint_t getwc(FILE* stream) {
     return fgetwc(stream);
@@ -136,7 +139,9 @@ wint_t putwchar(wchar_t c) {
     return fputwc(c, stdout);
 }
 
-wint_t ungetwc(wint_t c, FILE* stream);
+FUNC_STUB(
+wint_t ungetwc(wint_t c, FILE* stream)
+)
 
 // some other functions
 

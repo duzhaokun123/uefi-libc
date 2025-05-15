@@ -5,6 +5,8 @@
 #ifndef ASSERT_H
 #define ASSERT_H
 
+#define __STDC_VERSION_ASSERT_H__ 202311L
+
 #include <stdlib.h>
 
 #ifdef NDEBUG

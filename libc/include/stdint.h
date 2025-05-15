@@ -5,7 +5,9 @@
 #ifndef STDINT_H
 #define STDINT_H
 
-#ifdef _MSC_EXTENSIONS
+#define __STDC_VERSION_STDINT_H__ 202311L
+
+#if defined(UEFI_LIBC_USE_GNU_EFI) && defined(_MSC_EXTENSIONS)
 typedef char           int8_t; // gnu-efi use char as int8_t on detected _MSC_EXTENSIONS, make it happy
 #else
 typedef __INT8_TYPE__  int8_t;
@@ -30,7 +32,7 @@ typedef __INTPTR_TYPE__ intptr_t;
 typedef __UINT8_TYPE__  uint8_t;
 typedef __UINT16_TYPE__ uint16_t;
 typedef __UINT32_TYPE__ uint32_t;
-#ifdef __GNUC__
+#if defined(UEFI_LIBC_USE_GNU_EFI) && defined(__GNUC__)
 typedef unsigned int __attribute__((__mode__(__DI__)))  uint64_t;
 #else
 typedef __UINT64_TYPE__ uint64_t;
@@ -59,5 +61,15 @@ typedef uint64_t uintn_t;
 #else
 #error "Unknown pointer size"
 #endif
+
+static_assert(sizeof(int8_t) == 1, "sizeof(int8_t) != 1");
+static_assert(sizeof(int16_t) == 2, "sizeof(int16_t) != 2");
+static_assert(sizeof(int32_t) == 4, "sizeof(int32_t) != 4");
+static_assert(sizeof(int64_t) == 8, "sizeof(int64_t) != 8");
+static_assert(sizeof(uint8_t) == 1, "sizeof(uint8_t) != 1");
+static_assert(sizeof(uint16_t) == 2, "sizeof(uint16_t) != 2");
+static_assert(sizeof(uint32_t) == 4, "sizeof(uint32_t) != 4");
+static_assert(sizeof(uint64_t) == 8, "sizeof(uint64_t) != 8");
+
 
 #endif //STDINT_H

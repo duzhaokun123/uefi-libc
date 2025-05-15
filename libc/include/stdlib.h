@@ -5,6 +5,8 @@
 #ifndef STDLIB_H
 #define STDLIB_H
 
+#define __STDC_VERSION_STDLIB_H__ 202311L
+
 #include <restrict.h>
 #include <stdint.h>
 #include <stddef.h>

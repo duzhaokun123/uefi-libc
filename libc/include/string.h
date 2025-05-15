@@ -5,6 +5,8 @@
 #ifndef STRING_H
 #define STRING_H
 
+#define __STDC_VERSION_STRING_H__ 202311L
+
 #include <stddef.h>
 #include <restrict.h>
 

@@ -5,6 +5,8 @@
 #ifndef STDIO_H
 #define STDIO_H
 
+#define __STDC_VERSION_STDIO_H__ 202311L
+
 #include <restrict.h>
 #include <stdarg.h>
 #include <stddef.h>

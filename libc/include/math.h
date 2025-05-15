@@ -5,6 +5,8 @@
 #ifndef MATH_H
 #define MATH_H
 
+#define __STDC_VERSION_MATH_H__ 202311L
+
 #ifdef __cplusplus
 extern "C" {
 #endif

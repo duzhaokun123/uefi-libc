@@ -5,6 +5,8 @@
 #ifndef TIME_H
 #define TIME_H
 
+#define __STDC_VERSION_TIME_H__ 202311L
+
 #include <restrict.h>
 #include <stddef.h>
 

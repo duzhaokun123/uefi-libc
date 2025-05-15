@@ -5,6 +5,8 @@
 #ifndef WCHAR_H
 #define WCHAR_H
 
+#define __STDC_VERSION_WCHAR_H__ 202311L
+
 #include <restrict.h>
 #include <stdio.h>
 #include <stdint.h>

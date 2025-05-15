@@ -6,6 +6,8 @@ UEFI 能用的标准 C 库
 
 一旦 clang 的 uefi libc 完全可用 这个项目应该被弃用依赖应该转向 clang 的 uefi libc
 
+[一些问题](more.md)
+
 ## 编译
 
 建议使用 clang >= 20.1.3

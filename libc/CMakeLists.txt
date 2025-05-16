@@ -70,6 +70,7 @@ target_sources(c PUBLIC
         include/unistd.h
 
         include/restrict.h
+        include/arch.h
 
         include/uefi.h
 )

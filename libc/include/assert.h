@@ -7,7 +7,7 @@
 
 #define __STDC_VERSION_ASSERT_H__ 202311L
 
-#include <stdlib.h>
+#include <stdio.h>
 
 #ifdef NDEBUG
 #define assert(e) ((void)0)
@@ -16,7 +16,7 @@
     do { \
         if (!(e)) { \
             printf("Assertion failed: %s, file %s, line %d\n", #e, __FILE__, __LINE__); \
-            abort(); \
+            __builtin_trap(); \
         } \
     } while (0)
 #endif

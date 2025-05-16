@@ -10,3 +10,9 @@ int unlink(const char* path) {
     errno = EIO;
     return -1;
 }
+
+int isatty(int fd) {
+    errno = ENOTTY;
+    return 0; // EFI_SIMPLE_TEXT_OUT may work link a terminal, but we have no way to check
+}
+

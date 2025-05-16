@@ -7,6 +7,8 @@
 #include "FILE_stream.h"
 #include <efi.h>
 
+#include "errno.h"
+
 class FILE_File : public FILE_stream {
 public:
     explicit FILE_File(EFI_FILE_HANDLE fileHandle);
@@ -27,8 +29,12 @@ public:
     wint_t fputwc(wchar_t c) override;
 
 private:
+    errno_t setFlushErrno(EFI_STATUS status);
+    errno_t setReadErrno(EFI_STATUS status);
+    errno_t setWriteErrno(EFI_STATUS status);
+
     EFI_FILE_HANDLE _file;
-    EFI_STATUS _status = EFI_SUCCESS;
+    errno_t _errno = 0;
     bool _isEof = false;
 };
 

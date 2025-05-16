@@ -116,21 +116,22 @@ FILE* fopen(const char* restrict filename, const char* restrict mode) {
         openMode |= EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE | EFI_FILE_MODE_CREATE;
     }
     auto status = rootfs->Open(rootfs, &fileHandle, (CHAR16*) filename, openMode, 0);
+    /* | status                | description                                                                      |
+     * |-----------------------|----------------------------------------------------------------------------------|
+     * | EFI_SUCCESS           | The file was opened.                                                             |
+     * | EFI_NOT_FOUND         | The specified file could not be found on the device.                             |
+     * | EFI_NO_MEDIA          | The device has no medium.                                                        |
+     * | EFI_MEDIA_CHANGED     | The device has a different medium in it or the medium is no longer supported.    |
+     * | EFI_DEVICE_ERROR      | The device reported an error.                                                    |
+     * | EFI_VOLUME_CORRUPTED  | The file system structures are corrupted.                                        |
+     * | EFI_WRITE_PROTECTED   | An attempt was made to create a file, or open a file for write when the media is |
+     * |                       | write-protected.                                                                 |
+     * | EFI_ACCESS_DENIED     | The service denied access to the file.                                           |
+     * | EFI_OUT_OF_RESOURCES  | Not enough resources were available to open the file.                            |
+     * | EFI_VOLUME_FULL       | The volume is full.                                                              |
+     * | EFI_INVALID_PARAMETER | This refers to a regular file, not a directory.                                  |
+     */
     switch (status) {
-        /* | status                | description                                                                                       |
-         * |-----------------------|---------------------------------------------------------------------------------------------------|
-         * | EFI_SUCCESS           | The file was opened.                                                                              |
-         * | EFI_NOT_FOUND         | The specified file could not be found on the device.                                              |
-         * | EFI_NO_MEDIA          | The device has no medium.                                                                         |
-         * | EFI_MEDIA_CHANGED     | The device has a different medium in it or the medium is no longer supported.                     |
-         * | EFI_DEVICE_ERROR      | The device reported an error.                                                                     |
-         * | EFI_VOLUME_CORRUPTED  | The file system structures are corrupted.                                                         |
-         * | EFI_WRITE_PROTECTED   | An attempt was made to create a file, or open a file for write when the media is write-protected. |
-         * | EFI_ACCESS_DENIED     | The service denied access to the file.                                                            |
-         * | EFI_OUT_OF_RESOURCES  | Not enough resources were available to open the file.                                             |
-         * | EFI_VOLUME_FULL       | The volume is full.                                                                               |
-         * | EFI_INVALID_PARAMETER | This refers to a regular file, not a directory.                                                   |
-         */
         case EFI_SUCCESS: {
             errno = 0;
             break;

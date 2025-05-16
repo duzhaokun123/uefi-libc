@@ -14,6 +14,8 @@
 extern "C" {
 #endif
 
+#define TIME_UTC 0
+
 typedef __UINT64_TYPE__ clock_t;
 typedef __UINT64_TYPE__ time_t;
 

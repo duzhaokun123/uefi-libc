@@ -23,7 +23,7 @@ int FILE_File::fclose() {
 int FILE_File::fflush() {
     auto status = _file->Flush(_file);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setFlushErrno(status);
         return EOF;
     }
     return 0;
@@ -34,7 +34,7 @@ int FILE_File::fgetc() {
     uintn_t bufferSize = sizeof(char);
     auto status = _file->Read(_file, &bufferSize, &ch);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setWriteErrno(status);
         return EOF;
     }
     if (bufferSize == 0) {
@@ -49,7 +49,7 @@ int FILE_File::fputc(int c) {
     uintn_t bufferSize = sizeof(char);
     auto status = _file->Write(_file, &bufferSize, &ch);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setWriteErrno(status);
         return EOF;
     }
     return c;
@@ -59,7 +59,7 @@ size_t FILE_File::fread(void* ptr, size_t size, size_t count) {
     uintn_t bufferSize = size * count;
     auto status = _file->Read(_file, &bufferSize, ptr);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setReadErrno(status);
         return 0;
     }
     if (bufferSize == 0) {
@@ -73,7 +73,7 @@ size_t FILE_File::fwrite(const void* ptr, size_t size, size_t count) {
     uintn_t bufferSize = size * count;
     auto status = _file->Write(_file, &bufferSize, const_cast<void*>(ptr));
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setWriteErrno(status);
         return 0;
     }
     // FIXME: bufferSize writed may not n times of size
@@ -130,7 +130,7 @@ long int FILE_File::ftell() {
     uint64_t position = 0;
     auto status = _file->GetPosition(_file, &position);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        _errno = EIO;
         return -1;
     }
     return static_cast<long int>(position);
@@ -141,12 +141,11 @@ int FILE_File::feof() {
 }
 
 int FILE_File::ferror() {
-    // XXX: should we convert EFI_STATUS to errno?
-    return _status != EFI_SUCCESS ? 1 : 0;
+    return _errno;
 }
 
 void FILE_File::clearerr() {
-    _status = EFI_SUCCESS;
+    _errno = 0;
 }
 
 wint_t FILE_File::fgetwc() {
@@ -154,7 +153,7 @@ wint_t FILE_File::fgetwc() {
     uintn_t bufferSize = sizeof(wchar_t);
     auto status = _file->Read(_file, &bufferSize, &ch);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setReadErrno(status);
         return WEOF;
     }
     if (bufferSize == 0) {
@@ -169,8 +168,134 @@ wint_t FILE_File::fputwc(wchar_t c) {
     uintn_t bufferSize = sizeof(wchar_t);
     auto status = _file->Write(_file, &bufferSize, &ch);
     if (status != EFI_SUCCESS) {
-        _status = status;
+        setWriteErrno(status);
         return WEOF;
     }
     return c;
+}
+
+errno_t FILE_File::setFlushErrno(EFI_STATUS status) {
+    /* | status               | description                               |
+     * |----------------------|-------------------------------------------|
+     * | EFI_SUCCESS          | The data was flushed.                     |
+     * | EFI_NO_MEDIA         | The device has no medium.                 |
+     * | EFI_DEVICE_ERROR     | The device reported an error.             |
+     * | EFI_VOLUME_CORRUPTED | The file system structures are corrupted. |
+     * | EFI_WRITE_PROTECTED  | The file or medium is write-protected.    |
+     * | EFI_ACCESS_DENIED    | The file was opened read-only.            |
+     * | EFI_VOLUME_FULL      | The volume is full.                       |
+     */
+    switch (status) {
+        case EFI_SUCCESS: {
+            _errno = 0;
+            break;
+        }
+        case EFI_NO_MEDIA: {
+            _errno = ENXIO;
+            break;
+        }
+        case EFI_DEVICE_ERROR:
+        case EFI_VOLUME_CORRUPTED: {
+            _errno = EIO;
+            break;
+        }
+        case EFI_WRITE_PROTECTED:
+        case EFI_ACCESS_DENIED: {
+            _errno = EACCES;
+            break;
+        }
+        case EFI_VOLUME_FULL: {
+            _errno = ENOSPC;
+            break;
+        }
+        default: {
+            _errno = EIO;
+            break;
+        }
+    }
+    return _errno;
+}
+
+errno_t FILE_File::setReadErrno(EFI_STATUS status) {
+    /* | status               | description                                                                          |
+     * |----------------------|--------------------------------------------------------------------------------------|
+     * | EFI_SUCCESS          | The data was read.                                                                   |
+     * | EFI_NO_MEDIA         | The device has no medium.                                                            |
+     * | EFI_DEVICE_ERROR     | The device reported an error.                                                        |
+     * | EFI_DEVICE_ERROR     | An attempt was made to read from a deleted file.                                     |
+     * | EFI_DEVICE_ERROR     | On entry, the current file position is beyond the end of the file.                   |
+     * | EFI_VOLUME_CORRUPTED | The file system structures are corrupted.                                            |
+     * | EFI_BUFFER_TOO_SMALL | The BufferSize is too small to read the current directory entry. BufferSize has been |
+     * |                      | updated with the size needed to complete the request.                                |
+     */
+    switch (status) {
+        case EFI_SUCCESS: {
+            _errno = 0;
+            break;
+        }
+        case EFI_NO_MEDIA: {
+            _errno = ENXIO;
+            break;
+        }
+        case EFI_DEVICE_ERROR:
+        case EFI_VOLUME_CORRUPTED: {
+            _errno = EIO;
+            break;
+        }
+        case EFI_ACCESS_DENIED: {
+            _errno = EACCES;
+            break;
+        }
+        default: {
+            _errno = EIO;
+            break;
+        }
+    }
+    return _errno;
+}
+
+errno_t FILE_File::setWriteErrno(EFI_STATUS status) {
+    /* | status               | description                                       |
+     * |----------------------|---------------------------------------------------|
+     * | EFI_SUCCESS          | The data was written.                             |
+     * | EFI_UNSUPPORT        | Writes to open directory files are not supported. |
+     * | EFI_NO_MEDIA         | The device has no medium.                         |
+     * | EFI_DEVICE_ERROR     | The device reported an error.                     |
+     * | EFI_DEVICE_ERROR     | An attempt was made to write to a deleted file.   |
+     * | EFI_VOLUME_CORRUPTED | The file system structures are corrupted.         |
+     * | EFI_WRITE_PROTECTED  | The file or medium is write-protected.            |
+     * | EFI_ACCESS_DENIED    | The file was opened read-only.                    |
+     * | EFI_VOLUME_FULL      | The volume is full.                               |
+     */
+    switch (status) {
+        case EFI_SUCCESS: {
+            _errno = 0;
+            break;
+        }
+        case EFI_UNSUPPORTED:
+        case EFI_DEVICE_ERROR:
+        case EFI_VOLUME_CORRUPTED: {
+            _errno = EIO;
+            break;
+        }
+        case EFI_NO_MEDIA: {
+            _errno = ENXIO;
+            break;
+        }
+
+        case EFI_WRITE_PROTECTED:
+        case EFI_ACCESS_DENIED: {
+            _errno = EACCES;
+            break;
+        }
+        case EFI_VOLUME_FULL: {
+            _errno = ENOSPC;
+            break;
+        }
+        default: {
+            _errno = EIO;
+            break;
+        }
+    }
+    return _errno;
 }

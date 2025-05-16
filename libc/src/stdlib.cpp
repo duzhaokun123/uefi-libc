@@ -60,7 +60,7 @@ int randNext = 0;
 
 int rand() {
     auto r = randNext;
-    randNext = (randNext * 1103515245 + 12345) & 0x7FFFFFFF; // FIXME: i don't, github copilot made this
+    randNext = (randNext * 1103515245 + 12345) & 0x7FFFFFFF; // FIXME: idk, github copilot made this
     return r;
 }
 

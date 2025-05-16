@@ -10,6 +10,7 @@ extern "C" {
 #endif
 
 int unlink(const char* path);
+int isatty(int fd);
 
 #ifdef __cplusplus
 }

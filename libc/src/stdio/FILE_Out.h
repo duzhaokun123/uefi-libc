@@ -6,6 +6,7 @@
 #define FILE_OUT_H
 #include "FILE_stream.h"
 #include <efi.h>
+#include <errno.h>
 
 class FILE_Out : public FILE_stream {
 public:
@@ -27,6 +28,7 @@ public:
     wint_t fputwc(wchar_t c) override;
 
 private:
+    errno_t _error = 0;
     EFI_SIMPLE_TEXT_OUT_PROTOCOL* _out;
 };
 

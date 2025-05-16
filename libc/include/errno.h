@@ -11,7 +11,9 @@
 extern "C" {
 #endif
 
-extern int _errno;
+typedef int errno_t;
+
+extern errno_t _errno;
 
 #define errno _errno // FIXME: make errno thread safe, but do we really have threads?
 

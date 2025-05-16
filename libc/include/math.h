@@ -11,6 +11,26 @@
 extern "C" {
 #endif
 
+typedef float float_t;
+typedef double double_t;
+
+#define HUGE_VALF __builtin_huge_valf()
+#define HUGE_VAL __builtin_huge_val()
+#define HUGE_VALL __builtin_huge_vall()
+
+#define INFINITY __builtin_inff()
+
+#define NAN __builtin_nanf("")
+
+#define FP_ILOG0 __builtin_ilogb(0.0f)
+#define FP_ILOGNAN __builtin_ilogb(NAN)
+
+#define FP_NORMAL 4
+#define FP_SUBNORMAL 3
+#define FP_ZERO 2
+#define FP_INFINITE 1
+#define FP_NAN 0
+
 float fabsf(float arg);
 double fabs(double arg);
 long double fabsl(long double arg);

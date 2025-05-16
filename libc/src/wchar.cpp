@@ -10,6 +10,10 @@
 #include "stdio/FILE_stream.h"
 #include "utils/STUB.h"
 
+struct mbstate_t {
+    bool init = true;
+};
+
 int fwprintf(FILE* restrict stream, const wchar_t* restrict format, ...) {
     va_list args;
     va_start(args, format);
@@ -144,6 +148,12 @@ wint_t ungetwc(wint_t c, FILE* stream)
 )
 
 // some other functions
+
+int mbsinit(const mbstate_t* ps) {
+    if (ps == nullptr) return -1;
+    if (ps->init) return 0;
+    return -1;
+}
 
 int putws(const wchar_t* s) {
     return fputws(s, stdout);

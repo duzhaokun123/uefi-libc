@@ -15,6 +15,12 @@
 extern "C" {
 #endif
 
+struct mbstate_t;
+
+#ifndef __cplusplus
+typedef struct mbstate_t mbstate_t;
+#endif
+
 typedef int32_t wint_t;
 
 #define WEOF (-1)
@@ -78,15 +84,15 @@ size_t wcsftime(wchar_t* restrict s, size_t maxsize, const wchar_t* restrict for
                 const struct tm* restrict timeptr);
 wint_t btowc(int c);
 int wctob(wint_t c);
-// int mbsinit(const mbstate_t* ps);
-// size_t mbrlen(const char* restrict s, size_t n, mbstate_t* restrict ps);
-// size_t mbrtowc(wchar_t* restrict pwc, const char* restrict s, size_t n,
-//                mbstate_t* restrict ps);
-// size_t wcrtomb(char* restrict s, wchar_t wc, mbstate_t* restrict ps);
-// size_t mbsrtowcs(wchar_t* restrict dst, const char** restrict src, size_t len,
-//                  mbstate_t* restrict ps);
-// size_t wcsrtombs(char* restrict dst, const wchar_t** restrict src, size_t len,
-//                  mbstate_t* restrict ps);
+int mbsinit(const mbstate_t* ps);
+size_t mbrlen(const char* restrict s, size_t n, mbstate_t* restrict ps);
+size_t mbrtowc(wchar_t* restrict pwc, const char* restrict s, size_t n,
+               mbstate_t* restrict ps);
+size_t wcrtomb(char* restrict s, wchar_t wc, mbstate_t* restrict ps);
+size_t mbsrtowcs(wchar_t* restrict dst, const char** restrict src, size_t len,
+                 mbstate_t* restrict ps);
+size_t wcsrtombs(char* restrict dst, const wchar_t** restrict src, size_t len,
+                 mbstate_t* restrict ps);
 
 // non-standard
 int putws(const wchar_t* s);
